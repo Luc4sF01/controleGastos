@@ -979,6 +979,11 @@
       grid-column: span 2 / span 2;
     }
   }
+  .sm\:mt-0 {
+    @media (width >= 40rem) {
+      margin-top: calc(var(--spacing) * 0);
+    }
+  }
   .sm\:w-auto {
     @media (width >= 40rem) {
       width: auto;

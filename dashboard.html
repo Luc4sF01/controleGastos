@@ -37,7 +37,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             border-radius: 2.5rem;
             width: 95%; max-width: 500px;
-            padding: 2rem; margin: 15px;
+            padding: 1.5rem; margin: 15px;
             position: relative; z-index: 10;
         }
 
@@ -83,10 +83,10 @@
     <div class="overlay"></div>
 
     <main class="glass-card">
-        <header class="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <header class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-[900] tracking-tighter uppercase italic">Pro<span class="text-white/40">Flow</span></h1>
-                <p class="text-[9px] tracking-[0.3em] uppercase text-white/40">Dashboard</p>
+                <p class="text-[9px] tracking-[0.3em] uppercase text-white/40 font-bold">Dashboard</p>
             </div>
             <div class="flex gap-2">
                 <a href="balancete.html" class="text-[10px] uppercase tracking-widest border border-white/20 px-3 py-2 rounded-full hover:bg-white/10 transition-all flex items-center">
@@ -96,13 +96,13 @@
             </div>
         </header>
 
-        <section class="mb-8 p-6 bg-white/5 rounded-[2rem] border border-white/10 text-center">
+        <section class="mb-6 p-6 bg-white/5 rounded-[2rem] border border-white/10 text-center">
             <p class="text-xs uppercase tracking-widest text-white/40 mb-1">Gasto mensal</p>
             <h2 id="total" class="text-3xl sm:text-4xl font-light tracking-tight">R$ 0,00</h2>
         </section>
 
         <section class="space-y-3 mb-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2">
                 <select id="mesFiltro" class="apple-input rounded-2xl p-3 text-sm cursor-pointer"></select>
                 <input id="data" type="date" class="apple-input rounded-2xl p-3 text-sm">
             </div>
@@ -116,21 +116,18 @@
                     <option value="Outros">Outros</option>
                 </select>
                 <input id="titulo" placeholder="O que você comprou?" class="apple-input rounded-2xl p-4 text-sm">
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div class="flex flex-col sm:flex-row gap-2">
                     <input id="valor" type="number" placeholder="Valor (R$)" class="apple-input rounded-2xl p-4 text-sm">
-                    <input id="parcelas" type="number" placeholder="Parcelas (Ex: 12)" min="1" class="apple-input rounded-2xl p-4 text-sm">
+                    <button id="salvar" class="btn-prime w-full p-4 rounded-2xl text-xs uppercase tracking-widest sm:mt-0">
+                        Adicionar
+                    </button>
                 </div>
-                
-                <button id="salvar" class="btn-prime w-full p-4 rounded-2xl text-xs uppercase tracking-widest mt-1">
-                    Adicionar Gasto
-                </button>
             </div>
         </section>
 
         <section>
             <div class="flex justify-between items-center mb-4 px-2">
-                <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">Histórico</h3>
+                <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">Histórico Detalhado</h3>
                 <select id="categoriaFiltro" class="apple-input rounded-xl px-2 py-1 text-[9px] uppercase tracking-widest border-white/10 w-auto">
                     <option value="todos">Todas</option>
                     <option value="Alimentação">Alimentação</option>
@@ -146,14 +143,14 @@
 
     <div id="modalEditar" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-[100] p-6">
         <div class="glass-card max-w-sm w-full">
-            <h3 class="text-xl font-semibold mb-6">Editar Lançamento</h3>
+            <h3 class="text-xl font-semibold mb-6 text-center">Editar Lançamento</h3>
             <div class="space-y-4">
-                <input id="editTitulo" class="apple-input w-full rounded-2xl p-4 text-sm">
-                <input id="editValor" type="number" class="apple-input w-full rounded-2xl p-4 text-sm">
-                <input id="editData" type="date" class="apple-input w-full rounded-2xl p-4 text-sm">
+                <input id="editTitulo" class="apple-input rounded-xl p-4 text-sm">
+                <input id="editValor" type="number" class="apple-input rounded-xl p-4 text-sm">
+                <input id="editData" type="date" class="apple-input rounded-xl p-4 text-sm">
                 <div class="flex gap-3 pt-4">
-                    <button id="salvarEdicao" class="btn-prime flex-1 p-4 rounded-2xl text-xs uppercase">Salvar</button>
-                    <button id="cancelarEdicao" class="border border-white/20 text-white flex-1 p-4 rounded-2xl text-xs uppercase">Voltar</button>
+                    <button id="salvarEdicao" class="btn-prime flex-1 p-4 rounded-xl text-xs uppercase">Salvar</button>
+                    <button id="cancelarEdicao" class="border border-white/20 text-white flex-1 p-4 rounded-xl text-xs uppercase">Voltar</button>
                 </div>
             </div>
         </div>
@@ -162,12 +159,10 @@
     <script type="module">
         import { supabase } from "./supabase.js"
 
-        // Fundo Dinâmico
         const bg = document.getElementById('bg');
         const randomID = Math.floor(Math.random() * 1000);
         bg.style.backgroundImage = `url('https://picsum.photos/id/${randomID}/1920/1080?grayscale&blur=2')`;
 
-        // Sessão
         const { data: { session } } = await supabase.auth.getSession()
         if(!session) window.location.href="./index.html"
 
@@ -181,7 +176,6 @@
         const editData = document.getElementById("editData")
         let editId = null
 
-        // Meses
         const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
         meses.forEach((m, i) => {
             const opt = document.createElement("option")
@@ -212,19 +206,24 @@
                 if(mesGasto !== mesSel || g.tipo === 'receita') return
 
                 totalDespesas += Number(g.valor)
+
                 if(catSel !== "todos" && g.categoria !== catSel) return
 
                 lista.innerHTML += `
                     <div class="expense-item p-4 flex flex-col gap-1 first:rounded-t-2xl last:rounded-b-2xl">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-medium text-white truncate mr-2">${g.titulo}</span>
-                            <span class="text-sm font-semibold whitespace-nowrap">R$ ${Number(g.valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                            <span class="text-sm font-semibold whitespace-nowrap">
+                                R$ ${Number(g.valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+                            </span>
                         </div>
-                        <div class="flex justify-between items-center text-[10px] text-white/40 uppercase tracking-widest">
-                            <span>${g.data.split('-').reverse().join('/')} • ${g.categoria}</span>
+                        <div class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center text-[10px] text-white/40 uppercase tracking-widest">
+                                <span>${g.data.split('-').reverse().join('/')} • ${g.categoria}</span>
+                            </div>
                             <div class="flex gap-4">
-                                <button class="text-blue-400 font-bold" data-edit="${g.id}">Editar</button>
-                                <button class="text-red-400 font-bold" data-delete="${g.id}">Excluir</button>
+                                <button class="text-[10px] text-blue-400 font-bold" data-edit="${g.id}">Editar</button>
+                                <button class="text-[10px] text-red-400 font-bold" data-delete="${g.id}">Excluir</button>
                             </div>
                         </div>
                     </div>`
@@ -232,7 +231,6 @@
 
             totalEl.innerText = totalDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-            // Eventos
             document.querySelectorAll("[data-delete]").forEach(btn => {
                 btn.onclick = async () => {
                     if(confirm("Excluir este lançamento?")) {
@@ -257,36 +255,23 @@
         document.getElementById("salvar").onclick = async () => {
             const titulo = document.getElementById("titulo").value
             const valor = document.getElementById("valor").value
-            const dataOriginal = document.getElementById("data").value
+            const data = document.getElementById("data").value
             const categoria = document.getElementById("categoria").value
-            const numParcelas = parseInt(document.getElementById("parcelas").value) || 1
             const { data: { user } } = await supabase.auth.getUser()
 
             if(!titulo || !valor) return alert("Preencha título e valor")
 
-            const parcelaId = crypto.randomUUID()
+            const { error } = await supabase.from("gastos").insert([{ 
+                titulo, valor, data, categoria, tipo: 'despesa', user_id: user.id 
+            }])
 
-            // LÓGICA DE PARCELAMENTO
-            for (let i = 0; i < numParcelas; i++) {
-                const dataParcela = new Date(dataOriginal + "T12:00:00")
-                dataParcela.setMonth(dataParcela.getMonth() + i)
-
-                await supabase.from("gastos").insert([{ 
-                    titulo: numParcelas > 1 ? `${titulo} (${i+1}/${numParcelas})` : titulo, 
-                    valor, 
-                    data: dataParcela.toISOString().split('T')[0], 
-                    categoria, 
-                    tipo: 'despesa', 
-                    parcela_id: numParcelas > 1 ? parcelaId : null,
-                    parcela_atual: i + 1,
-                    user_id: user.id 
-                }])
+            if(error) {
+                alert("Erro ao salvar: " + error.message)
+            } else {
+                document.getElementById("titulo").value = ""
+                document.getElementById("valor").value = ""
+                carregarGastos()
             }
-
-            document.getElementById("titulo").value = ""
-            document.getElementById("valor").value = ""
-            document.getElementById("parcelas").value = ""
-            carregarGastos()
         }
 
         document.getElementById("salvarEdicao").onclick = async () => {
