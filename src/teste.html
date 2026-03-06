@@ -1,0 +1,9 @@
+<script type="module">
+
+import { supabase } from "./supabase.js"
+
+const { data } = await supabase.auth.getSession()
+
+console.log("Conectado ao Supabase:", data)
+
+</script>
