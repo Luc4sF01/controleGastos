@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova senha</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-black text-white flex items-center justify-center min-h-screen">
+
+<div class="backdrop-blur-xl bg-white/5 border border-white/10 p-8 rounded-2xl w-full max-w-sm flex flex-col gap-4">
+
+<h1 class="text-xl text-center font-semibold">
+Criar nova senha
+</h1>
+
+<input
+id="senha"
+type="password"
+placeholder="Nova senha"
+class="bg-white/5 border border-white/10 rounded-xl p-3"
+/>
+
+<button
+id="salvar"
+class="bg-white text-black p-3 rounded-xl">
+Salvar nova senha
+</button>
+
+</div>
+
+<script type="module">
+
+import { supabase } from "./supabase.js"
+
+document.getElementById("salvar").onclick = async () => {
+
+const novaSenha = document.getElementById("senha").value
+
+const { error } = await supabase.auth.updateUser({
+password: novaSenha
+})
+
+if(error){
+alert(error.message)
+}else{
+alert("Senha atualizada com sucesso")
+window.location.href = "./index.html"
+}
+
+}
+
+</script>
+
+</body>
+</html>

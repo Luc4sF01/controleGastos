@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProFlow • Criar Conta</title>
+    <title>ProFlow • Recuperar Senha</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
@@ -21,20 +21,20 @@
             background-color: #000;
         }
 
-        /* Background Dinâmico (Sincronizado com o estilo da outra página) */
+        /* Background Dinâmico Padronizado */
         .dynamic-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-position: center;
             background-size: cover;
             z-index: -2;
-            filter: grayscale(100%) brightness(0.8);
+            transition: opacity 1s ease;
         }
 
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
             z-index: -1;
         }
 
@@ -44,7 +44,7 @@
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
             border-radius: 2.5rem;
             width: 90%;
             max-width: 400px;
@@ -63,7 +63,7 @@
 
         .apple-input:focus {
             background: rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.5);
             outline: none;
             box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
         }
@@ -103,39 +103,31 @@
     <main class="glass-card fade-in">
         
         <header class="mb-10 text-center">
-            <h1 class="text-4xl font-900 tracking-tighter text-white italic">
-                PRO<span class="text-white/30">.</span>FLOW
+            <h1 class="text-3xl font-[900] tracking-tighter text-white uppercase italic leading-none">
+                Reset<span class="text-white/30">.</span>Access
             </h1>
-            <p class="text-white/50 text-[10px] tracking-[0.4em] uppercase mt-2">Crie Sua Conta gratuitamente</p>
+            <p class="text-white/50 text-[10px] tracking-[0.3em] uppercase mt-4">Recuperação de conta</p>
         </header>
 
-        <form id="cadastroForm" class="space-y-4">
+        <div class="space-y-4">
             <input
                 id="email"
                 type="email"
-                placeholder="E-mail"
-                required
-                class="apple-input w-full rounded-2xl p-5 text-sm"
-            />
-
-            <input
-                id="senha"
-                type="password"
-                placeholder="Crie uma senha"
+                placeholder="Digite seu e-mail cadastrado"
                 required
                 class="apple-input w-full rounded-2xl p-5 text-sm"
             />
 
             <button
-                type="submit"
-                class="btn-prime w-full p-5 rounded-2xl mt-4 text-sm">
-                Cadastrar agora
+                id="reset"
+                class="btn-prime w-full p-5 rounded-2xl mt-4 text-sm tracking-wider">
+                Enviar Instruções
             </button>
-        </form>
+        </div>
 
         <footer class="mt-10 text-center">
-            <a href="./index.html" class="text-xs text-white/40 hover:text-white transition-all font-light uppercase tracking-widest">
-                Já possui conta? <span class="font-bold text-white/80 border-b border-white/20">Entrar</span>
+            <a href="./index.html" class="text-[10px] text-white/40 hover:text-white transition-all font-medium uppercase tracking-[0.2em]">
+                ← Voltar para o login
             </a>
         </footer>
 
@@ -144,39 +136,38 @@
     <script type="module">
         import { supabase } from "./supabase.js"
 
-        // Carrega uma imagem aleatória de tema dark/arquitetura
+        // Carrega imagem aleatória P&B
         const bg = document.getElementById('bg');
-        const randomID = Math.floor(Math.random() * 500);
-        bg.style.backgroundImage = `url('https://picsum.photos/id/${randomID}/1920/1080?grayscale')`;
+        const randomID = Math.floor(Math.random() * 800);
+        bg.style.backgroundImage = `url('https://picsum.photos/id/${randomID}/1920/1080?grayscale&blur=2')`;
 
-        const form = document.getElementById("cadastroForm")
+        document.getElementById("reset").onclick = async () => {
+            const btn = document.getElementById("reset");
+            const email = document.getElementById("email").value;
 
-        form.addEventListener("submit", async (e)=>{
-            e.preventDefault()
-            
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "CRIANDO...";
-            btn.disabled = true;
-
-            const email = document.getElementById("email").value
-            const senha = document.getElementById("senha").value
-
-            const { error } = await supabase.auth.signUp({
-                email,
-                password: senha
-            })
-
-            if(error){
-                alert("Erro: " + error.message)
-                btn.innerText = originalText;
-                btn.disabled = false;
-                return
+            if(!email) {
+                alert("Por favor, insira um e-mail.");
+                return;
             }
 
-            alert("Conta criada com sucesso!")
-            window.location.href="./index.html"
-        })
+            btn.innerText = "ENVIANDO...";
+            btn.style.opacity = "0.5";
+            btn.disabled = true;
+
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + "/nova-senha.html"
+            });
+
+            if(error){
+                alert("Erro: " + error.message);
+                btn.innerText = "ENVIAR INSTRUÇÕES";
+                btn.style.opacity = "1";
+                btn.disabled = false;
+            } else {
+                alert("E-mail de recuperação enviado com sucesso!");
+                window.location.href = "./index.html";
+            }
+        }
     </script>
 
 </body>
