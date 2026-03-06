@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login • Controle de Gastos</title>
+<title>Criar conta • Controle de Gastos</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -14,10 +14,10 @@
 <div class="w-full max-w-sm p-8 flex flex-col gap-6">
 
 <h1 class="text-2xl font-semibold text-center">
-Controle de Gastos
+Criar conta
 </h1>
 
-<form id="loginForm" class="flex flex-col gap-4">
+<form id="cadastroForm" class="flex flex-col gap-4">
 
 <input
 id="email"
@@ -36,18 +36,19 @@ class="bg-black border border-white/20 rounded-xl p-3 outline-none focus:border-
 />
 
 <button
+type="submit"
 class="bg-white text-black p-3 rounded-xl font-medium hover:opacity-80 transition"
 >
-Entrar
+Cadastrar
 </button>
 
 </form>
 
 <a
-href="cadastro.html"
+href="index.html"
 class="text-sm text-center text-white/60 hover:text-white transition"
 >
-Criar conta
+Já tenho conta
 </a>
 
 </div>
@@ -56,7 +57,7 @@ Criar conta
 
 import { supabase } from "./supabase.js"
 
-const form = document.getElementById("loginForm")
+const form = document.getElementById("cadastroForm")
 
 form.addEventListener("submit", async (e)=>{
 
@@ -65,7 +66,7 @@ e.preventDefault()
 const email = document.getElementById("email").value
 const senha = document.getElementById("senha").value
 
-const { error } = await supabase.auth.signInWithPassword({
+const { error } = await supabase.auth.signUp({
 email: email,
 password: senha
 })
@@ -73,7 +74,8 @@ password: senha
 if(error){
 alert(error.message)
 }else{
-window.location.href = "dashboard.html"
+alert("Conta criada com sucesso!")
+window.location.href = "./index.html"
 }
 
 })

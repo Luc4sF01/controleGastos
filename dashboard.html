@@ -55,8 +55,6 @@ class="flex flex-col divide-y divide-white/10 border border-white/10 rounded-lg"
 
 </div>
 
-<!-- MODAL EDITAR -->
-
 <div id="modalEditar"
 class="fixed inset-0 bg-black/70 hidden items-center justify-center">
 
@@ -97,7 +95,7 @@ import { supabase } from "./supabase.js"
 const { data } = await supabase.auth.getSession()
 
 if(!data.session){
-window.location.href="index.html"
+window.location.href="./index.html"
 }
 
 const lista = document.getElementById("lista")
@@ -162,13 +160,11 @@ lista.innerHTML+=`
 
 <div class="flex gap-3">
 
-<button class="text-blue-400"
-data-edit="${g.id}">
+<button class="text-blue-400" data-edit="${g.id}">
 Editar
 </button>
 
-<button class="text-red-400"
-data-delete="${g.id}">
+<button class="text-red-400" data-delete="${g.id}">
 Excluir
 </button>
 
@@ -266,7 +262,7 @@ modal.classList.add("hidden")
 
 document.getElementById("logout").onclick=async ()=>{
 await supabase.auth.signOut()
-window.location.href="index.html"
+window.location.href="./index.html"
 }
 
 filtroMes.onchange=carregarGastos
