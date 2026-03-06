@@ -155,7 +155,7 @@
             btn.disabled = true;
 
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + "/nova-senha.html"
+                redirectTo: "https://controle-gastos-kohl.vercel.app/nova-senha.html"
             });
 
             if(error){
