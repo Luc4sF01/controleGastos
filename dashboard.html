@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProFlow • Dashboard</title>
-<link rel="icon" type="image/png" href="favicon.png">
-
+    <link rel="icon" type="image/png" href="favicon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
@@ -13,28 +12,19 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #000;
-            color: white;
+            margin: 0; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; background-color: #000; color: white;
         }
 
         .dynamic-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-position: center;
-            background-size: cover;
-            z-index: -2;
-            transition: opacity 1s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-position: center; background-size: cover;
+            z-index: -2; transition: opacity 1s ease;
         }
 
         .overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%);
             z-index: -1;
         }
@@ -46,12 +36,9 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             border-radius: 2.5rem;
-            width: 95%;
-            max-width: 500px;
-            padding: 2.5rem;
-            margin: 20px;
-            position: relative;
-            z-index: 10;
+            width: 95%; max-width: 500px;
+            padding: 2.5rem; margin: 20px;
+            position: relative; z-index: 10;
         }
 
         .apple-input {
@@ -68,9 +55,7 @@
         }
 
         .btn-prime {
-            background: #fff;
-            color: #000;
-            font-weight: 700;
+            background: #fff; color: #000; font-weight: 700;
             transition: all 0.3s ease;
         }
 
@@ -85,34 +70,29 @@
             transition: background 0.2s;
         }
 
-        .expense-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-        }
+        .expense-item:hover { background: rgba(255, 255, 255, 0.07); }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 
 <body>
-
     <div class="dynamic-bg" id="bg"></div>
     <div class="overlay"></div>
 
     <main class="glass-card">
-        
         <header class="flex justify-between items-center mb-8">
             <div>
-                <h1 class="text-2xl font-[900] tracking-tighter uppercase italic">
-                    Pro<span class="text-white/40">Flow</span>
-                </h1>
+                <h1 class="text-2xl font-[900] tracking-tighter uppercase italic">Pro<span class="text-white/40">Flow</span></h1>
                 <p class="text-[9px] tracking-[0.3em] uppercase text-white/40">Dashboard</p>
             </div>
-            <button id="logout" class="text-[10px] uppercase tracking-widest border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all">
-                Sair
-            </button>
+            <div class="flex gap-2">
+                <a href="balancete.html" class="text-[10px] uppercase tracking-widest border border-white/20 px-4 py-2 rounded-full hover:bg-white/10 transition-all flex items-center">
+                    Balanço
+                </a>
+                <button id="logout" class="text-[10px] uppercase tracking-widest border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition-all">Sair</button>
+            </div>
         </header>
 
         <section class="mb-8 p-6 bg-white/5 rounded-[2rem] border border-white/10 text-center">
@@ -127,22 +107,35 @@
             </div>
             
             <div class="flex flex-col gap-2">
+                <select id="categoria" class="apple-input w-full rounded-2xl p-3 text-sm">
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Contas">Contas</option>
+                    <option value="Outros">Outros</option>
+                </select>
                 <input id="titulo" placeholder="O que você comprou?" class="apple-input w-full rounded-2xl p-4 text-sm">
                 <div class="flex gap-2">
                     <input id="valor" type="number" placeholder="Valor (R$)" class="apple-input flex-1 rounded-2xl p-4 text-sm">
-                    <button id="salvar" class="btn-prime px-6 rounded-2xl text-xs uppercase tracking-widest">
-                        Adicionar
-                    </button>
+                    <button id="salvar" class="btn-prime px-6 rounded-2xl text-xs uppercase tracking-widest">Adicionar</button>
                 </div>
             </div>
         </section>
 
         <section>
-            <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4 px-2">Histórico Detalhado</h3>
-            <div id="lista" class="max-h-[300px] overflow-y-auto rounded-2xl space-y-1">
-                </div>
+            <div class="flex justify-between items-end mb-4 px-2">
+                <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30">Histórico Detalhado</h3>
+                <select id="categoriaFiltro" class="apple-input rounded-xl px-3 py-1 text-[10px] uppercase tracking-widest bg-transparent border-white/10">
+                    <option value="todos">Todas</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Contas">Contas</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+            <div id="lista" class="max-h-[300px] overflow-y-auto rounded-2xl space-y-1"></div>
         </section>
-
     </main>
 
     <div id="modalEditar" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-[100] p-6">
@@ -152,7 +145,6 @@
                 <input id="editTitulo" class="apple-input w-full rounded-2xl p-4 text-sm">
                 <input id="editValor" type="number" class="apple-input w-full rounded-2xl p-4 text-sm">
                 <input id="editData" type="date" class="apple-input w-full rounded-2xl p-4 text-sm">
-                
                 <div class="flex gap-3 pt-4">
                     <button id="salvarEdicao" class="btn-prime flex-1 p-4 rounded-2xl text-xs uppercase">Salvar</button>
                     <button id="cancelarEdicao" class="border border-white/20 text-white flex-1 p-4 rounded-2xl text-xs uppercase">Voltar</button>
@@ -164,30 +156,27 @@
     <script type="module">
         import { supabase } from "./supabase.js"
 
-        // Background Dinâmico (igual ao login)
         const bg = document.getElementById('bg');
         const randomID = Math.floor(Math.random() * 1000);
         bg.style.backgroundImage = `url('https://picsum.photos/id/${randomID}/1920/1080?grayscale&blur=2')`;
 
-        // Lógica de Autenticação
         const { data: { session } } = await supabase.auth.getSession()
         if(!session) window.location.href="./index.html"
 
         const lista = document.getElementById("lista")
         const totalEl = document.getElementById("total")
         const filtroMes = document.getElementById("mesFiltro")
+        const filtroCat = document.getElementById("categoriaFiltro")
         const modal = document.getElementById("modalEditar")
         const editTitulo = document.getElementById("editTitulo")
         const editValor = document.getElementById("editValor")
         const editData = document.getElementById("editData")
         let editId = null
 
-        // Popular Meses
         const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
         meses.forEach((m, i) => {
             const opt = document.createElement("option")
-            const val = (i + 1).toString().padStart(2, '0')
-            opt.value = val
+            opt.value = (i + 1).toString().padStart(2, '0')
             opt.innerText = m
             filtroMes.appendChild(opt)
         })
@@ -197,7 +186,8 @@
 
         async function carregarGastos() {
             const { data: { user } } = await supabase.auth.getUser()
-            const mesSelecionado = filtroMes.value
+            const mesSel = filtroMes.value
+            const catSel = filtroCat.value
 
             const { data: gastos } = await supabase
                 .from("gastos")
@@ -206,22 +196,33 @@
                 .order("data", { ascending: false })
 
             lista.innerHTML = ""
-            let total = 0
+            let totalDespesas = 0
 
             gastos.forEach(g => {
                 const mesGasto = g.data.slice(5, 7)
-                if(mesGasto !== mesSelecionado) return
+                if(mesGasto !== mesSel) return
 
-                total += Number(g.valor)
+                // REGRA: Ignora receitas no histórico e no cálculo do Dashboard
+                if(g.tipo === 'receita') return
+
+                totalDespesas += Number(g.valor)
+
+                // Filtro visual de categoria
+                if(catSel !== "todos" && g.categoria !== catSel) return
 
                 lista.innerHTML += `
                     <div class="expense-item p-4 flex flex-col gap-1 first:rounded-t-2xl last:rounded-b-2xl">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm font-medium">${g.titulo}</span>
-                            <span class="text-sm font-semibold text-white">R$ ${Number(g.valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                            <span class="text-sm font-medium text-white">${g.titulo}</span>
+                            <span class="text-sm font-semibold text-white">
+                                R$ ${Number(g.valor).toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+                            </span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-white/40 uppercase tracking-widest">${g.data.split('-').reverse().join('/')}</span>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-[10px] text-white/40 uppercase tracking-widest">${g.data.split('-').reverse().join('/')}</span>
+                                <span class="text-[8px] bg-white/10 px-2 py-0.5 rounded-full text-white/50 uppercase">${g.categoria || 'Outros'}</span>
+                            </div>
                             <div class="flex gap-4">
                                 <button class="text-[10px] text-blue-400/80 hover:text-blue-300 uppercase font-bold" data-edit="${g.id}">Editar</button>
                                 <button class="text-[10px] text-red-400/80 hover:text-red-300 uppercase font-bold" data-delete="${g.id}">Excluir</button>
@@ -231,9 +232,8 @@
                 `
             })
 
-            totalEl.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+            totalEl.innerText = totalDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-            // Eventos de Deletar/Editar
             document.querySelectorAll("[data-delete]").forEach(btn => {
                 btn.onclick = async () => {
                     if(confirm("Excluir este lançamento?")) {
@@ -259,14 +259,23 @@
             const titulo = document.getElementById("titulo").value
             const valor = document.getElementById("valor").value
             const data = document.getElementById("data").value
+            const categoria = document.getElementById("categoria").value
             const { data: { user } } = await supabase.auth.getUser()
 
-            if(!titulo || !valor) return alert("Preencha todos os campos")
+            if(!titulo || !valor) return alert("Preencha título e valor")
 
-            await supabase.from("gastos").insert([{ titulo, valor, data, user_id: user.id }])
-            document.getElementById("titulo").value = ""
-            document.getElementById("valor").value = ""
-            carregarGastos()
+            // IMPORTANTE: Força o tipo como 'despesa' para não misturar com o balanço
+            const { error } = await supabase.from("gastos").insert([{ 
+                titulo, valor, data, categoria, tipo: 'despesa', user_id: user.id 
+            }])
+
+            if(error) {
+                alert("Erro ao salvar: " + error.message)
+            } else {
+                document.getElementById("titulo").value = ""
+                document.getElementById("valor").value = ""
+                carregarGastos()
+            }
         }
 
         document.getElementById("salvarEdicao").onclick = async () => {
@@ -287,6 +296,7 @@
         }
 
         filtroMes.onchange = carregarGastos
+        filtroCat.onchange = carregarGastos
         carregarGastos()
     </script>
 </body>
