@@ -11,13 +11,12 @@
         body { font-family: 'Inter', sans-serif; background-color: #000; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
         .dynamic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-position: center; background-size: cover; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%); z-index: -1; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2.5rem; width: 95%; max-width: 600px; padding: 2.5rem; position: relative; z-index: 10; margin: 20px; }
-        .apple-input { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; transition: all 0.3s ease; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2.5rem; width: 95%; max-width: 600px; padding: 1.5rem; sm:padding: 2.5rem; margin: 15px; position: relative; z-index: 10; }
+        .apple-input { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; transition: all 0.3s ease; width: 100%; }
         .apple-input:focus { border-color: rgba(255,255,255,0.4); outline: none; }
-        .btn-nav { font-size: 10px; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 999px; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.1em; }
+        .btn-nav { font-size: 10px; border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; }
         .btn-nav:hover { background: white; color: black; }
-        .btn-add-income { background: #4ade80; color: #000; font-weight: 700; transition: all 0.3s ease; }
-        .btn-add-income:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn-add-income { background: #4ade80; color: #000; font-weight: 700; width: 100%; }
         .income-text { color: #4ade80; }
         .expense-text { color: rgba(255,255,255,0.6); }
         ::-webkit-scrollbar { width: 5px; }
@@ -29,59 +28,64 @@
     <div class="overlay"></div>
 
     <main class="glass-card">
-        <nav class="flex justify-between items-center mb-8">
-            <a href="dashboard.html" class="btn-nav text-white/50">← Dashboard</a>
-            <h1 class="text-xl font-[900] italic uppercase">Pro<span class="text-white/40">Flow</span></h1>
-            <span class="text-[9px] uppercase tracking-widest text-white/40">Balancete</span>
+        <nav class="flex justify-between items-center mb-6">
+            <a href="dashboard.html" class="btn-nav text-white/50">← Gastos</a>
+            <h1 class="text-lg font-[900] italic uppercase">Pro<span class="text-white/40">Flow</span></h1>
         </nav>
 
-        <section class="grid grid-cols-2 gap-4 mb-8">
-            <div class="bg-white/5 p-5 rounded-[2rem] border border-white/10 text-center">
-                <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Entradas</p>
-                <h2 id="totalReceitas" class="text-2xl font-semibold income-text">R$ 0,00</h2>
-            </div>
-            <div class="bg-white/5 p-5 rounded-[2rem] border border-white/10 text-center">
-                <p class="text-[10px] uppercase tracking-widest text-white/40 mb-1">Saídas</p>
-                <h2 id="totalDespesas" class="text-2xl font-semibold text-red-400/80">R$ 0,00</h2>
-            </div>
-            <div class="col-span-2 bg-white/10 p-6 rounded-[2rem] border border-white/20 text-center">
-                <p class="text-xs uppercase tracking-widest text-white/60 mb-1">Saldo em Conta</p>
-                <h2 id="saldoFinal" class="text-4xl font-light tracking-tight">R$ 0,00</h2>
+        <section class="mb-6 p-4 bg-white/5 border border-white/10 rounded-3xl">
+            <p class="text-[9px] uppercase tracking-widest text-white/40 mb-2">Saldo Inicial em Conta</p>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input id="saldoInicialInput" type="number" placeholder="R$ 0,00" class="apple-input rounded-xl p-3 text-sm">
+                <button id="btnSalvarSaldo" class="btn-nav bg-white/10 w-full sm:w-auto">Definir</button>
             </div>
         </section>
 
-        <section class="mb-8 p-4 bg-green-400/5 border border-green-400/10 rounded-3xl space-y-3">
-            <h4 class="text-[10px] uppercase tracking-widest text-green-400/60 font-bold px-1 italic">Novo Aporte / Receita</h4>
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <div class="bg-white/5 p-4 rounded-[1.5rem] border border-white/10 text-center">
+                <p class="text-[9px] uppercase tracking-widest text-white/40 mb-1">Entradas</p>
+                <h2 id="totalReceitas" class="text-xl font-semibold income-text">R$ 0,00</h2>
+            </div>
+            <div class="bg-white/5 p-4 rounded-[1.5rem] border border-white/10 text-center">
+                <p class="text-[9px] uppercase tracking-widest text-white/40 mb-1">Saídas</p>
+                <h2 id="totalDespesas" class="text-xl font-semibold text-red-400/80">R$ 0,00</h2>
+            </div>
+            <div class="sm:col-span-2 bg-white/10 p-5 rounded-[1.5rem] border border-white/20 text-center">
+                <p class="text-xs uppercase tracking-widest text-white/60 mb-1">Saldo Final Projetado</p>
+                <h2 id="saldoFinal" class="text-3xl font-light tracking-tight">R$ 0,00</h2>
+            </div>
+        </section>
+
+        <section class="mb-6 p-4 bg-green-400/5 border border-green-400/10 rounded-3xl space-y-3">
+            <h4 class="text-[9px] uppercase tracking-widest text-green-400/60 font-bold italic">Novo Aporte / Receita</h4>
             <div class="flex flex-col gap-2">
-                <input id="incTitulo" placeholder="Ex: Salário, Venda, Pix..." class="apple-input w-full rounded-xl p-3 text-sm">
-                <div class="flex gap-2">
-                    <input id="incValor" type="number" placeholder="Valor R$" class="apple-input flex-1 rounded-xl p-3 text-sm">
-                    <input id="incData" type="date" class="apple-input flex-1 rounded-xl p-3 text-sm text-white/40">
-                    <button id="btnSalvarReceita" class="btn-add-income px-6 rounded-xl text-[10px] uppercase tracking-widest">Lançar</button>
+                <input id="incTitulo" placeholder="Fonte da receita (Ex: Salário)" class="apple-input rounded-xl p-3 text-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <input id="incValor" type="number" placeholder="Valor R$" class="apple-input rounded-xl p-3 text-sm">
+                    <input id="incData" type="date" class="apple-input rounded-xl p-3 text-sm">
                 </div>
+                <button id="btnSalvarReceita" class="btn-add-income p-3 rounded-xl text-[10px] uppercase tracking-widest">Lançar Ganho</button>
             </div>
         </section>
 
-        <div class="mb-6">
-            <select id="mesFiltro" class="apple-input w-full rounded-2xl p-3 text-sm cursor-pointer"></select>
-        </div>
+        <select id="mesFiltro" class="apple-input rounded-2xl p-3 text-sm mb-6 cursor-pointer"></select>
 
         <section>
-            <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4 px-2 text-center">Fluxo de Caixa</h3>
+            <h3 class="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4 text-center">Fluxo de Caixa Mensal</h3>
             <div id="listaBalancete" class="max-h-[300px] overflow-y-auto rounded-2xl space-y-1"></div>
         </section>
     </main>
 
     <div id="modalEditar" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-[100] p-6">
         <div class="glass-card max-w-sm w-full">
-            <h3 class="text-xl font-semibold mb-6">Editar Lançamento</h3>
+            <h3 class="text-xl font-semibold mb-6 text-center">Editar Lançamento</h3>
             <div class="space-y-4">
-                <input id="editTitulo" class="apple-input w-full rounded-2xl p-4 text-sm">
-                <input id="editValor" type="number" class="apple-input w-full rounded-2xl p-4 text-sm">
-                <input id="editData" type="date" class="apple-input w-full rounded-2xl p-4 text-sm">
-                <div class="flex gap-3 pt-4">
-                    <button id="salvarEdicao" class="btn-add-income flex-1 p-4 rounded-2xl text-xs uppercase text-black">Salvar</button>
-                    <button id="cancelarEdicao" class="border border-white/20 text-white flex-1 p-4 rounded-2xl text-xs uppercase">Voltar</button>
+                <input id="editTitulo" class="apple-input rounded-xl p-4 text-sm">
+                <input id="editValor" type="number" class="apple-input rounded-xl p-4 text-sm">
+                <input id="editData" type="date" class="apple-input rounded-xl p-4 text-sm">
+                <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <button id="salvarEdicao" class="btn-add-income flex-1 p-4 rounded-xl text-xs uppercase text-black">Salvar</button>
+                    <button id="cancelarEdicao" class="border border-white/20 text-white flex-1 p-4 rounded-xl text-xs uppercase">Voltar</button>
                 </div>
             </div>
         </div>
@@ -106,6 +110,7 @@
         const editData = document.getElementById("editData");
         let editId = null;
 
+        // POPULAR MESES
         const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         meses.forEach((m, i) => {
             const opt = document.createElement("option");
@@ -115,6 +120,16 @@
         });
         filtroMes.value = new Date().toISOString().slice(5, 7);
         document.getElementById("incData").value = new Date().toISOString().split("T")[0];
+
+        // SALDO INICIAL
+        let saldoInicialGlobal = parseFloat(localStorage.getItem('proflow_saldo_inicial')) || 0;
+        document.getElementById('saldoInicialInput').value = saldoInicialGlobal;
+
+        document.getElementById('btnSalvarSaldo').onclick = () => {
+            saldoInicialGlobal = parseFloat(document.getElementById('saldoInicialInput').value) || 0;
+            localStorage.setItem('proflow_saldo_inicial', saldoInicialGlobal);
+            carregarBalancete();
+        };
 
         async function carregarBalancete() {
             const { data: { user } } = await supabase.auth.getUser();
@@ -126,49 +141,40 @@
                 .eq("user_id", user.id)
                 .order("data", { ascending: false });
 
-            let somaEntradas = 0;
-            let somaSaidas = 0;
+            let somaEntradas = 0, somaSaidas = 0;
             lista.innerHTML = "";
 
             lancamentos.forEach(l => {
-                const mesL = l.data.slice(5, 7);
-                if (mesL !== mesSel) return;
-
-                const valorNum = Number(l.valor);
+                if (l.data.slice(5, 7) !== mesSel) return;
+                const v = Number(l.valor);
                 const ehReceita = (l.tipo === 'receita');
-
-                if (ehReceita) somaEntradas += valorNum;
-                else somaSaidas += valorNum;
+                if (ehReceita) somaEntradas += v; else somaSaidas += v;
 
                 lista.innerHTML += `
-                    <div class="flex justify-between items-center p-4 bg-white/5 border-b border-white/5 first:rounded-t-2xl last:rounded-b-2xl">
-                        <div class="flex-1">
+                    <div class="flex justify-between items-center p-4 bg-white/5 border-b border-white/5">
+                        <div class="truncate mr-4">
                             <p class="text-xs font-medium ${ehReceita ? 'income-text' : 'text-white/80'}">${l.titulo}</p>
-                            <div class="flex gap-3 items-center mt-1">
-                                <span class="text-[8px] uppercase tracking-widest text-white/30">${l.categoria || (ehReceita ? 'RECEITA' : 'GERAL')}</span>
-                                <div class="flex gap-2">
-                                    <button class="text-[8px] text-blue-400/60 uppercase font-bold hover:text-blue-300" data-edit="${l.id}">Editar</button>
-                                    <button class="text-[8px] text-red-400/60 uppercase font-bold hover:text-red-300" data-delete="${l.id}">Excluir</button>
-                                </div>
+                            <div class="flex gap-4 mt-1">
+                                <button class="text-[8px] text-blue-400/80 uppercase font-bold" data-edit="${l.id}">Editar</button>
+                                <button class="text-[8px] text-red-400/80 uppercase font-bold" data-delete="${l.id}">Excluir</button>
                             </div>
                         </div>
-                        <span class="text-sm font-semibold ${ehReceita ? 'income-text' : 'expense-text'}">
-                            ${ehReceita ? '+' : '-'} R$ ${valorNum.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+                        <span class="text-xs font-semibold whitespace-nowrap ${ehReceita ? 'income-text' : 'expense-text'}">
+                            ${ehReceita ? '+' : '-'} R$ ${v.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
                         </span>
-                    </div>
-                `;
+                    </div>`;
             });
 
-            const saldoCalculado = somaEntradas - somaSaidas;
+            const totalFinal = saldoInicialGlobal + somaEntradas - somaSaidas;
             resReceitas.innerText = `R$ ${somaEntradas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             resDespesas.innerText = `R$ ${somaSaidas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            resSaldo.innerText = `R$ ${saldoCalculado.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            resSaldo.className = `text-4xl font-light tracking-tight ${saldoCalculado >= 0 ? 'text-white' : 'text-red-400'}`;
+            resSaldo.innerText = `R$ ${totalFinal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            resSaldo.className = `text-3xl font-light tracking-tight ${totalFinal >= 0 ? 'text-white' : 'text-red-400'}`;
 
-            // Configura botões de Ação
+            // EVENTOS DE BOTÃO
             document.querySelectorAll("[data-delete]").forEach(btn => {
                 btn.onclick = async () => {
-                    if(confirm("Deseja realmente excluir este lançamento?")) {
+                    if(confirm("Deseja excluir este lançamento?")) {
                         await supabase.from("gastos").delete().eq("id", btn.dataset.delete);
                         carregarBalancete();
                     }
@@ -195,15 +201,13 @@
 
             if(!titulo || !valor) return alert("Preencha fonte e valor.");
 
-            const { error } = await supabase.from("gastos").insert([{ 
+            await supabase.from("gastos").insert([{ 
                 titulo, valor, data, tipo: 'receita', categoria: 'Receita', user_id: user.id 
             }]);
-
-            if(!error) {
-                document.getElementById("incTitulo").value = "";
-                document.getElementById("incValor").value = "";
-                carregarBalancete();
-            }
+            
+            document.getElementById("incTitulo").value = "";
+            document.getElementById("incValor").value = "";
+            carregarBalancete();
         };
 
         document.getElementById("salvarEdicao").onclick = async () => {
@@ -217,7 +221,6 @@
         };
 
         document.getElementById("cancelarEdicao").onclick = () => modal.classList.replace("flex", "hidden");
-
         filtroMes.onchange = carregarBalancete;
         carregarBalancete();
     </script>
